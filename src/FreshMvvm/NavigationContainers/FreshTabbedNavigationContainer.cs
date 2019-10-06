@@ -27,6 +27,37 @@ namespace FreshMvvm
             FreshIOC.Container.Register<IFreshNavigationService> (this, NavigationServiceName);
         }
 
+
+		  /// <summary>
+		  /// Adds a tab for a pre-initialised FreshMasterDetailNavigationContainer.
+		  /// </summary>
+		  /// <param name="masterDetailNav"></param>
+		  public void AddMasterDetailTab(FreshMasterDetailNavigationContainer masterDetailNav)
+        {
+	        _tabs.Add (masterDetailNav);
+	        Children.Add(masterDetailNav);
+        }
+
+		  /// <summary>
+		  /// EXPERIMENTAL: Under development - do not use.
+		  /// </summary>
+		  /// <typeparam name="T"></typeparam>
+		  /// <param name="title"></param>
+		  /// <param name="icon"></param>
+		  /// <param name="detailPages"></param>
+		  /// <returns></returns>
+		  public virtual FreshMasterDetailNavigationContainer AddMasterDetailTab<T>(string title, string icon, IList<FreshBasePageModel> detailPages) where T : FreshBasePageModel
+		  {
+			  // TODO: Update FreshPageModelResolver to handle resolving MasterDetailNavs
+			  var masterDetailNav = (FreshMasterDetailNavigationContainer)FreshPageModelResolver.ResolvePageModel<T> ();
+			  masterDetailNav.GetModel ().CurrentNavigationServiceName = NavigationServiceName;
+			  _tabs.Add (masterDetailNav);
+			  if (!string.IsNullOrWhiteSpace(icon))
+				  masterDetailNav.Icon = icon;
+			  Children.Add (masterDetailNav);
+			  return masterDetailNav;
+		  }
+
         public virtual Page AddTab<T> (string title, string icon, object data = null) where T : FreshBasePageModel
         {
             var page = FreshPageModelResolver.ResolvePageModel<T> (data);
