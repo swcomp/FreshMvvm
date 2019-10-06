@@ -2,6 +2,8 @@ using System;
 using Xamarin.Forms;
 using System.Collections.Generic;
 using FreshMvvm;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
+using Application = Xamarin.Forms.Application;
 
 namespace FreshMvvmApp
 {
@@ -32,7 +34,10 @@ namespace FreshMvvmApp
 
         public void LoadTabbedNav()
         {
-            var tabbedNavigation = new FreshTabbedNavigationContainer();
+	         var tabbedNavigation = new FreshTabbedNavigationContainer();
+				// ref: https://montemagno.com/xamarin-forms-official-bottom-navigation-bottom-tabs-on-android/
+	         tabbedNavigation.On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
+
             tabbedNavigation.AddTab<ContactListPageModel>("Contacts", "contacts.png", null);
             tabbedNavigation.AddTab<QuoteListPageModel>("Quotes", "document.png", null);
             MainPage = tabbedNavigation;
